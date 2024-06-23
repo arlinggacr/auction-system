@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CreateAuction } from '../apps/use-cases/create-auction';
+import { FindAllAuction } from '../apps/use-cases/find-all-auction';
+import { FindByIdAuction } from '../apps/use-cases/find-by-id-auction';
 import { PlaceBid } from '../apps/use-cases/place-bid';
 import { AuctionEntity } from '../infrastructure/database/entities/auction.entities';
 import { BidEntity } from '../infrastructure/database/entities/bid.entities';
@@ -15,6 +17,8 @@ import { AuctionController } from './controllers/auction.controller';
   providers: [
     CreateAuction,
     PlaceBid,
+    FindAllAuction,
+    FindByIdAuction,
     AuctionGateway,
     {
       provide: 'AuctionRepository',
