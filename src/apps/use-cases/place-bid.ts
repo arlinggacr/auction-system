@@ -14,9 +14,9 @@ export class PlaceBid {
 
   async execute(auctionId: number, bidAmount: number): Promise<Bid> {
     const auction = await this.auctionRepository.findById(auctionId);
+
     auction.placeBid(bidAmount);
-    await this.auctionRepository.save(auction);
-    const bid = new Bid(null, bidAmount, new Date(), auctionId);
+    const bid = new Bid(null, bidAmount, new Date(), +auctionId);
     return this.bidRepository.save(bid);
   }
 }
