@@ -1,24 +1,20 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CreateAuction } from '../apps/use-cases/create-auction';
-import { FindAllAuction } from '../apps/use-cases/find-all-auction';
-import { FindByIdAuction } from '../apps/use-cases/find-by-id-auction';
-import { PlaceBid } from '../apps/use-cases/place-bid';
-import { AuctionEntity } from '../infrastructure/database/entities/auction.entities';
-import { BidEntity } from '../infrastructure/database/entities/bid.entities';
-import { AuctionTypeOrmRepository } from '../infrastructure/database/repositories/auction.repository';
-import { BidTypeOrmRepository } from '../infrastructure/database/repositories/bid.repository';
+import { AuctionService } from '../apps/services/auction.service';
+import { BidService } from '../apps/services/bid.service';
+import { AuctionOrmEntity } from '../infrastructure/database/entities/auction.orm-entities';
+import { BidOrmEntity } from '../infrastructure/database/entities/bid.orm-entities';
+import { AuctionTypeOrmRepository } from '../infrastructure/database/repositories/auction.orm-repository';
+import { BidTypeOrmRepository } from '../infrastructure/database/repositories/bid.orm-repository';
 import { AuctionGateway } from '../infrastructure/web-sockets/auction.gateway';
 import { AuctionController } from './controllers/auction.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AuctionEntity, BidEntity])],
+  imports: [TypeOrmModule.forFeature([AuctionOrmEntity, BidOrmEntity])],
   controllers: [AuctionController],
   providers: [
-    CreateAuction,
-    PlaceBid,
-    FindAllAuction,
-    FindByIdAuction,
+    AuctionService,
+    BidService,
     AuctionGateway,
     {
       provide: 'AuctionRepository',
