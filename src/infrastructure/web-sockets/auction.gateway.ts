@@ -5,20 +5,16 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
-import { PlaceBid } from '../../apps/use-cases/place-bid';
 
 @WebSocketGateway()
 export class AuctionGateway {
   @WebSocketServer()
   server: Server;
 
-  constructor(private readonly placeBid: PlaceBid) {}
-
-  @SubscribeMessage('newBid')
-  async handleNewBid(
-    @MessageBody() bid: { auctionId: number; amount: number },
+  @SubscribeMessage('placeBid')
+  handlePlaceBid(
+    @MessageBody() data: { auctionId: string; bidAmount: number },
   ) {
-    const savedBid = await this.placeBid.execute(bid.auctionId, bid.amount);
-    this.server.emit('bidUpdate', savedBid);
+    this.server.emit('bidPlaced', data);
   }
 }
