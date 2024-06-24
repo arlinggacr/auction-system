@@ -6,39 +6,36 @@ import {
   Post,
   UseInterceptors,
 } from '@nestjs/common';
-import { CreateAuction } from '../../apps/use-cases/create-auction';
-import { FindAllAuction } from '../../apps/use-cases/find-all-auction';
-import { FindByIdAuction } from '../../apps/use-cases/find-by-id-auction';
-import { PlaceBid } from '../../apps/use-cases/place-bid';
+import { BidService } from 'src/apps/services/bid.service';
+import { AuctionService } from '../../apps/services/auction.service';
 import { Auction } from '../../domain/entities/auction.model';
 import { CreateAuctionDto } from '../dto/create-auction.dto';
+import { PlaceBidDto } from '../dto/place-bid.dto';
 import { ResponseInterceptor } from '../interfaces/response-interceptor';
 
 @Controller('auctions')
 export class AuctionController {
   constructor(
-    private readonly createAuction: CreateAuction,
-    private readonly placeBid: PlaceBid,
-    private readonly findAllAuctions: FindAllAuction,
-    private readonly findAuctionById: FindByIdAuction,
+    private readonly auctionService: AuctionService,
+    private readonly bidService: BidService,
   ) {}
 
   @Get('all')
   @UseInterceptors(ResponseInterceptor)
   findAll() {
-    return this.findAllAuctions.execute();
+    return this.auctionService.findAllAuctions();
   }
 
   @Get(':id')
   @UseInterceptors(ResponseInterceptor)
-  findById(@Param('id') id: number) {
-    return this.findAuctionById.execute(Number(id));
+  findById(@Param('id') id: string) {
+    return this.auctionService.findAuctionById(id);
   }
 
   @Post()
   @UseInterceptors(ResponseInterceptor)
   create(@Body() createAuctionDto: CreateAuctionDto) {
-    return this.createAuction.execute(
+    return this.auctionService.createAuction(
       new Auction(
         null,
         createAuctionDto.title,
@@ -52,7 +49,7 @@ export class AuctionController {
 
   @Post('bid/:id')
   @UseInterceptors(ResponseInterceptor)
-  bid(@Param('id') id: number, @Body('amount') amount: number) {
-    return this.placeBid.execute(id, amount);
+  bid(@Param('id') id: string, @Body('amount') placeBidDto: PlaceBidDto) {
+    return this.bidService.placeBid(id, placeBidDto.amount);
   }
 }
