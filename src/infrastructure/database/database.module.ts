@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
-import { AuctionEntity } from './entities/auction.entities';
-import { BidEntity } from './entities/bid.entities';
+import { AuctionOrmEntity } from './entities/auction.orm-entities';
+import { BidOrmEntity } from './entities/bid.orm-entities';
 
 dotenv.config();
 
@@ -18,8 +18,9 @@ dotenv.config();
       ssl: { rejectUnauthorized: false },
       autoLoadEntities: true,
       synchronize: true,
+      uuidExtension: 'pgcrypto',
     }),
-    TypeOrmModule.forFeature([AuctionEntity, BidEntity]),
+    TypeOrmModule.forFeature([AuctionOrmEntity, BidOrmEntity]),
   ],
 })
 export class DatabaseModule {}
