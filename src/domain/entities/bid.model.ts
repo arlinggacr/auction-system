@@ -1,8 +1,8 @@
 export class Bid {
   constructor(
-    public id: number,
+    public id: string,
     public amount: number,
     public timestamp: Date,
-    public auctionId: number,
+    public auctionId: string,
   ) {}
 }
