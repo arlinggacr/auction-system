@@ -38,6 +38,8 @@ export class AuctionController {
         createAuctionDto.startPrice,
         createAuctionDto.startPrice,
         createAuctionDto.endTime,
+        createAuctionDto.buyNowPrice,
+        createAuctionDto.jumpBid,
       ),
     );
   }

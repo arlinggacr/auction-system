@@ -21,4 +21,12 @@ export class CreateAuctionDto {
 
   @IsDateString()
   endTime: Date;
+
+  @IsNumber()
+  @Min(1)
+  buyNowPrice: number;
+
+  @IsNumber()
+  @Min(500)
+  jumpBid: number;
 }

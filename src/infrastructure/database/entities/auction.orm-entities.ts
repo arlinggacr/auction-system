@@ -16,7 +16,7 @@ export class AuctionOrmEntity {
   @Column()
   title: string;
 
-  @Column()
+  @Column({ nullable: true })
   description: string;
 
   @Column()
@@ -27,6 +27,12 @@ export class AuctionOrmEntity {
 
   @Column({ type: 'timestamp' })
   endTime: Date;
+
+  @Column({ nullable: true })
+  buyNowPrice: number;
+
+  @Column({ nullable: true })
+  jumpBid?: number;
 
   @OneToMany(() => BidOrmEntity, (bid) => bid.auction)
   bids: BidOrmEntity[];
