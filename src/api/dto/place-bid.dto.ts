@@ -6,6 +6,7 @@ export class PlaceBidDto {
   id: string;
 
   @IsNumber()
+  @IsNotEmpty()
   @Min(0)
   amount: number;
 }
