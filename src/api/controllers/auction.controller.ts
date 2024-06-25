@@ -6,19 +6,14 @@ import {
   Post,
   UseInterceptors,
 } from '@nestjs/common';
-import { BidService } from 'src/apps/services/bid.service';
 import { AuctionService } from '../../apps/services/auction.service';
 import { Auction } from '../../domain/entities/auction.model';
 import { CreateAuctionDto } from '../dto/create-auction.dto';
-import { PlaceBidDto } from '../dto/place-bid.dto';
 import { ResponseInterceptor } from '../interfaces/response-interceptor';
 
 @Controller('auctions')
 export class AuctionController {
-  constructor(
-    private readonly auctionService: AuctionService,
-    private readonly bidService: BidService,
-  ) {}
+  constructor(private readonly auctionService: AuctionService) {}
 
   @Get('all')
   @UseInterceptors(ResponseInterceptor)
@@ -45,11 +40,5 @@ export class AuctionController {
         createAuctionDto.endTime,
       ),
     );
-  }
-
-  @Post('bid/:id')
-  @UseInterceptors(ResponseInterceptor)
-  bid(@Param('id') id: string, @Body('amount') placeBidDto: PlaceBidDto) {
-    return this.bidService.placeBid(id, placeBidDto.amount);
   }
 }
