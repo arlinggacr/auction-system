@@ -19,7 +19,7 @@ export class AuctionService {
       return await this.auctionRepository.save(auction);
     } catch (error) {
       console.error('Error creating auction:', error);
-      throw new InternalServerErrorException('Failed to create auction');
+      throw new InternalServerErrorException('Server Error');
     }
   }
 
@@ -28,7 +28,7 @@ export class AuctionService {
       return await this.auctionRepository.findAll();
     } catch (error) {
       console.error('Error finding all auctions:', error);
-      throw new InternalServerErrorException('Failed to find all auctions');
+      throw new InternalServerErrorException('Server Error');
     }
   }
 
@@ -41,10 +41,7 @@ export class AuctionService {
       return auction;
     } catch (error) {
       console.error(`Error finding auction by id ${id}:`, error);
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-      throw new InternalServerErrorException('Failed to find auction by id');
+      throw new InternalServerErrorException('Server Error');
     }
   }
 }

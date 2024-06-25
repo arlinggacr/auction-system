@@ -34,9 +34,8 @@ export class BidService {
       const bid = new Bid(null, amount, new Date(), auctionId);
       return this.bidRepository.save(bid);
     } catch (err) {
-      console.error(err);
-
-      throw new InternalServerErrorException('Failed to save bid');
+      console.error('Error Placing bid: ', err);
+      throw new InternalServerErrorException('Server Error');
     }
   }
 
@@ -46,11 +45,10 @@ export class BidService {
       if (!bids) {
         throw new NotFoundException('Auction not found');
       }
-      console.log(bids);
-
       return bids;
     } catch (err) {
-      throw new InternalServerErrorException('Failed to find bid');
+      console.error('Error Finding all bids: ', err);
+      throw new InternalServerErrorException('Server Error');
     }
   }
 }
