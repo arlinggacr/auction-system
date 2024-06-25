@@ -19,7 +19,12 @@ export class BidTypeOrmRepository implements BidRepository {
     const auction = await this.auctionRepository.findOne({
       where: { id: bid.auctionId },
     });
-    const bidEntity = this.bidRepository.create({ ...bid, auction });
+
+    const bidEntity = this.bidRepository.create({
+      amount: bid.amount,
+      timestamp: bid.timestamp,
+      auction,
+    });
     const savedBid = await this.bidRepository.save(bidEntity);
 
     return new Bid(
@@ -28,5 +33,20 @@ export class BidTypeOrmRepository implements BidRepository {
       savedBid.timestamp,
       savedBid.auction.id,
     );
+  }
+
+  async findAllBid(auctionId: string): Promise<Bid[]> {
+    const bids = await this.bidRepository.find({
+      where: { auction: { id: auctionId } },
+    });
+
+    console.log(bids);
+
+    return bids.map((a) => ({
+      id: a.id,
+      amount: a.amount,
+      timestamp: a.timestamp,
+      auctionId,
+    }));
   }
 }
