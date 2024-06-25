@@ -45,9 +45,6 @@ export class BidTypeOrmRepository implements BidRepository {
     const bids = await this.bidRepository.find({
       where: { auction: { id: auctionId } },
     });
-
-    console.log(bids);
-
     return bids.map((a) => ({
       id: a.id,
       amount: a.amount,
