@@ -1,4 +1,11 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { BidOrmEntity } from './bid.orm-entities';
 
 @Entity('auctions')
@@ -23,4 +30,14 @@ export class AuctionOrmEntity {
 
   @OneToMany(() => BidOrmEntity, (bid) => bid.auction)
   bids: BidOrmEntity[];
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  adjustTimestamp(): void {
+    if (this.endTime) {
+      const adjustedDate = new Date(this.endTime);
+      adjustedDate.setHours(adjustedDate.getHours() + 7);
+      this.endTime = adjustedDate;
+    }
+  }
 }

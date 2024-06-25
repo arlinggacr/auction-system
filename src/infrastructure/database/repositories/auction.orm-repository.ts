@@ -16,6 +16,7 @@ export class AuctionTypeOrmRepository implements AuctionRepository {
     const auctions = await this.auctionRepository.find({
       relations: ['bids'],
     });
+
     return auctions.map(
       (a) =>
         new Auction(

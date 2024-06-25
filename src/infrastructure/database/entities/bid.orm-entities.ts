@@ -1,4 +1,6 @@
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   JoinColumn,
@@ -18,7 +20,17 @@ export class BidOrmEntity {
   @Column({ type: 'timestamp' })
   timestamp: Date;
 
-  @ManyToOne(() => AuctionOrmEntity, (auction) => auction.bids, { eager: true })
+  @ManyToOne(() => AuctionOrmEntity, (auction) => auction.bids)
   @JoinColumn({ name: 'auctionId' })
   auction: AuctionOrmEntity;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  adjustTimestamp(): void {
+    if (this.timestamp) {
+      const adjustedDate = new Date(this.timestamp);
+      adjustedDate.setHours(adjustedDate.getHours() + 7);
+      this.timestamp = adjustedDate;
+    }
+  }
 }
