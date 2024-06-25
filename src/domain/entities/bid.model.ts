@@ -3,6 +3,6 @@ export class Bid {
     public id: string,
     public amount: number,
     public timestamp: Date,
-    public auctionId: string,
+    public auctionId?: string,
   ) {}
 }

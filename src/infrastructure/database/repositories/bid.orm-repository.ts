@@ -46,7 +46,6 @@ export class BidTypeOrmRepository implements BidRepository {
       id: a.id,
       amount: a.amount,
       timestamp: a.timestamp,
-      auctionId,
     }));
   }
 }
