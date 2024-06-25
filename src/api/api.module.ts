@@ -8,10 +8,11 @@ import { AuctionTypeOrmRepository } from '../infrastructure/database/repositorie
 import { BidTypeOrmRepository } from '../infrastructure/database/repositories/bid.orm-repository';
 import { AuctionGateway } from '../infrastructure/web-sockets/auction.gateway';
 import { AuctionController } from './controllers/auction.controller';
+import { BidController } from './controllers/bid.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([AuctionOrmEntity, BidOrmEntity])],
-  controllers: [AuctionController],
+  controllers: [AuctionController, BidController],
   providers: [
     AuctionService,
     BidService,
