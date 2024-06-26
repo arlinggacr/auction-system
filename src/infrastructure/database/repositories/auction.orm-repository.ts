@@ -28,6 +28,7 @@ export class AuctionTypeOrmRepository implements AuctionRepository {
           mapped.endTime,
           mapped.buyNowPrice,
           mapped.jumpBid,
+          mapped.isClosed,
         ),
     );
   }
@@ -47,6 +48,7 @@ export class AuctionTypeOrmRepository implements AuctionRepository {
       auction.endTime,
       auction.buyNowPrice,
       auction.jumpBid,
+      auction.isClosed,
     );
   }
 
@@ -59,6 +61,7 @@ export class AuctionTypeOrmRepository implements AuctionRepository {
       endTime: auction.endTime,
       buyNowPrice: auction.buyNowPrice,
       jumpBid: auction.jumpBid,
+      isClosed: false,
     });
 
     const savedAuction = await this.auctionRepository.save(auctionEntity);
@@ -72,6 +75,7 @@ export class AuctionTypeOrmRepository implements AuctionRepository {
       savedAuction.endTime,
       savedAuction.buyNowPrice,
       savedAuction.jumpBid,
+      savedAuction.isClosed,
     );
   }
 }

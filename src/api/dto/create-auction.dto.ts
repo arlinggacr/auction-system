@@ -1,4 +1,6 @@
+import { Optional } from '@nestjs/common';
 import {
+  IsBoolean,
   IsDateString,
   IsNotEmpty,
   IsNumber,
@@ -29,4 +31,8 @@ export class CreateAuctionDto {
   @IsNumber()
   @Min(500)
   jumpBid: number;
+
+  @Optional()
+  @IsBoolean()
+  isClosed: boolean;
 }

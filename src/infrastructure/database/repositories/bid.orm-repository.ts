@@ -31,6 +31,13 @@ export class BidTypeOrmRepository implements BidRepository {
         currentPrice: bid.amount,
       });
     }
+
+    if (auction.buyNowPrice === bid.amount) {
+      await this.auctionRepository.update(bid.auctionId, {
+        isClosed: true,
+      });
+    }
+
     const savedBid = await this.bidRepository.save(bidEntity);
 
     return new Bid(
