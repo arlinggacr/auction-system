@@ -17,8 +17,8 @@ export class AuctionService {
   async createAuction(auction: Auction): Promise<Auction> {
     try {
       return await this.auctionRepository.save(auction);
-    } catch (error) {
-      console.error('Error creating auction:', error);
+    } catch (err) {
+      console.error('Error creating auction:', err);
       throw new InternalServerErrorException('Server Error');
     }
   }
@@ -26,8 +26,8 @@ export class AuctionService {
   async findAllAuctions(): Promise<Auction[]> {
     try {
       return await this.auctionRepository.findAll();
-    } catch (error) {
-      console.error('Error finding all auctions:', error);
+    } catch (err) {
+      console.error('Error finding all auctions:', err);
       throw new InternalServerErrorException('Server Error');
     }
   }
@@ -39,8 +39,11 @@ export class AuctionService {
         throw new NotFoundException('Auction not found');
       }
       return auction;
-    } catch (error) {
-      console.error(`Error finding auction by id ${id}:`, error);
+    } catch (err) {
+      if (err instanceof NotFoundException) {
+        throw err;
+      }
+      console.error(`Error finding auction by id ${id}:`, err);
       throw new InternalServerErrorException('Server Error');
     }
   }

@@ -30,11 +30,11 @@ export class BidService {
           'Amount must be greater than current price',
         );
       }
-      const multiplyBid = (amount - auction.currentPrice) % auction.jumpBid;
 
+      const multiplyBid = (amount - auction.currentPrice) % auction.jumpBid;
       if (multiplyBid !== 0) {
         throw new BadRequestException(
-          'Amount is have to be multiple of the jumpBid',
+          'Amount must be a multiple of the jumpBid',
         );
       }
 
@@ -42,7 +42,12 @@ export class BidService {
       const bid = new Bid(null, amount, new Date(), auctionId);
       return this.bidRepository.save(bid);
     } catch (err) {
-      console.error('Error Placing bid: ', err);
+      if (
+        err instanceof NotFoundException ||
+        err instanceof BadRequestException
+      ) {
+        throw err;
+      } else console.error('Error Placing bid: ', err);
       throw new InternalServerErrorException('Server Error');
     }
   }
@@ -55,8 +60,12 @@ export class BidService {
       }
       return bids;
     } catch (err) {
-      console.error('Error Finding all bids: ', err);
-      throw new InternalServerErrorException('Server Error');
+      if (err instanceof NotFoundException) {
+        throw err;
+      } else {
+        console.error('Error Finding all bids: ', err);
+        throw new InternalServerErrorException('Server Error');
+      }
     }
   }
 }
