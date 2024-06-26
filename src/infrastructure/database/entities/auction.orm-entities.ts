@@ -34,6 +34,9 @@ export class AuctionOrmEntity {
   @Column({ nullable: true })
   jumpBid?: number;
 
+  @Column({ nullable: true })
+  isClosed?: boolean;
+
   @OneToMany(() => BidOrmEntity, (bid) => bid.auction)
   bids: BidOrmEntity[];
 

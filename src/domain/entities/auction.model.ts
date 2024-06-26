@@ -8,6 +8,7 @@ export class Auction {
     public endTime: Date,
     public buyNowPrice: number,
     public jumpBid: number,
+    public isClosed: boolean,
   ) {}
 
   placeBid(amount: number) {
