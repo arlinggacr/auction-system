@@ -22,7 +22,7 @@ export class BidTypeOrmRepository implements BidRepository {
 
     const bidEntity = this.bidRepository.create({
       amount: bid.amount,
-      timestamp: bid.timestamp,
+      createdAt: bid.createdAt,
       auction,
     });
 
@@ -43,7 +43,7 @@ export class BidTypeOrmRepository implements BidRepository {
     return new Bid(
       savedBid.id,
       savedBid.amount,
-      savedBid.timestamp,
+      savedBid.createdAt,
       savedBid.auction.id,
     );
   }
@@ -55,7 +55,7 @@ export class BidTypeOrmRepository implements BidRepository {
     return bids.map((mapped) => ({
       id: mapped.id,
       amount: mapped.amount,
-      timestamp: mapped.timestamp,
+      createdAt: mapped.createdAt,
     }));
   }
 }
