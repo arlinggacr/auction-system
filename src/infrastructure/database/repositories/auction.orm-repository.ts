@@ -18,16 +18,16 @@ export class AuctionTypeOrmRepository implements AuctionRepository {
     });
 
     return auctions.map(
-      (a) =>
+      (mapped) =>
         new Auction(
-          a.id,
-          a.title,
-          a.description,
-          a.startPrice,
-          a.currentPrice,
-          a.endTime,
-          a.buyNowPrice,
-          a.jumpBid,
+          mapped.id,
+          mapped.title,
+          mapped.description,
+          mapped.startPrice,
+          mapped.currentPrice,
+          mapped.endTime,
+          mapped.buyNowPrice,
+          mapped.jumpBid,
         ),
     );
   }
