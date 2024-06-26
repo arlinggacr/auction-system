@@ -2,10 +2,13 @@ import {
   BeforeInsert,
   BeforeUpdate,
   Column,
+  CreateDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
+import { convertToUTCPlus7 } from '../../../shared/utils/helpers/timezone';
 import { BidOrmEntity } from './bid.orm-entities';
 
 @Entity('auctions')
@@ -37,16 +40,35 @@ export class AuctionOrmEntity {
   @Column({ nullable: true })
   isClosed?: boolean;
 
+  // @Column({ nullable: true })
+  // winnerAuction: string;
+
+  // @Column({ nullable: true })
+  // createdBy: string;
+
+  @CreateDateColumn({ type: 'timestamp' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamp' })
+  updatedAt: Date;
+
   @OneToMany(() => BidOrmEntity, (bid) => bid.auction)
   bids: BidOrmEntity[];
 
   @BeforeInsert()
-  @BeforeUpdate()
-  adjustTimestamp(): void {
+  adjustTimestamps(): void {
+    // Adjust endTime to UTC+7 if it exists
     if (this.endTime) {
-      const adjustedDate = new Date(this.endTime);
-      adjustedDate.setHours(adjustedDate.getHours() + 7);
-      this.endTime = adjustedDate;
+      this.endTime = convertToUTCPlus7(this.endTime);
     }
+
+    // Ensure createdAt and updatedAt are in UTC+7
+    this.createdAt = convertToUTCPlus7(new Date());
+  }
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  updateTimestamps(): void {
+    this.updatedAt = convertToUTCPlus7(new Date());
   }
 }
