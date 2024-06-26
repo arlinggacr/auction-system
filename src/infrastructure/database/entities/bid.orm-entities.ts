@@ -3,16 +3,18 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Generated,
   JoinColumn,
   ManyToOne,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
 } from 'typeorm';
 import { convertToUTCPlus7 } from '../../../shared/utils/helpers/timezone';
 import { AuctionOrmEntity } from './auction.orm-entities';
 
 @Entity('bids')
 export class BidOrmEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn({ type: 'uuid' })
+  @Generated('uuid')
   id: string;
 
   @Column()

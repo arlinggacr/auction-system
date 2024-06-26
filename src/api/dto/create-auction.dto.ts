@@ -14,7 +14,6 @@ export class CreateAuctionDto {
   title: string;
 
   @IsString()
-  @IsNotEmpty()
   description: string;
 
   @IsNumber()

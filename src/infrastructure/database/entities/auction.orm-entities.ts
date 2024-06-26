@@ -4,8 +4,9 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Generated,
   OneToMany,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { convertToUTCPlus7 } from '../../../shared/utils/helpers/timezone';
@@ -13,13 +14,14 @@ import { BidOrmEntity } from './bid.orm-entities';
 
 @Entity('auctions')
 export class AuctionOrmEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn({ type: 'uuid' })
+  @Generated('uuid')
   id: string;
 
   @Column()
   title: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'text', nullable: true })
   description: string;
 
   @Column()
