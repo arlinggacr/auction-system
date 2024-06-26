@@ -1,9 +1,5 @@
-import {
-  Inject,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { resErrorHandler } from 'src/shared/utils/exception-handler';
 import { Auction } from '../../domain/entities/auction.model';
 import { AuctionRepository } from '../../domain/repositories/auction.repositories';
 
@@ -19,7 +15,10 @@ export class AuctionService {
       return await this.auctionRepository.save(auction);
     } catch (err) {
       console.error('Error creating auction:', err);
-      throw new InternalServerErrorException('Server Error');
+      throw new resErrorHandler(
+        'Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -28,7 +27,10 @@ export class AuctionService {
       return await this.auctionRepository.findAll();
     } catch (err) {
       console.error('Error finding all auctions:', err);
-      throw new InternalServerErrorException('Server Error');
+      throw new resErrorHandler(
+        'Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -36,15 +38,18 @@ export class AuctionService {
     try {
       const auction = await this.auctionRepository.findById(id);
       if (!auction) {
-        throw new NotFoundException('Auction not found');
+        throw new resErrorHandler('Auction not found', HttpStatus.NOT_FOUND);
       }
       return auction;
     } catch (err) {
-      if (err instanceof NotFoundException) {
+      if (err instanceof resErrorHandler) {
         throw err;
       }
       console.error(`Error finding auction by id ${id}:`, err);
-      throw new InternalServerErrorException('Server Error');
+      throw new resErrorHandler(
+        'Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

@@ -1,10 +1,11 @@
 import {
-  BadRequestException,
+  HttpStatus,
   Inject,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
+import { resErrorHandler } from 'src/shared/utils/exception-handler';
 import { Bid } from '../../domain/entities/bid.model';
 import { AuctionRepository } from '../../domain/repositories/auction.repositories';
 import { BidRepository } from '../../domain/repositories/bid.repositories';
@@ -17,38 +18,41 @@ export class BidService {
     @Inject('AuctionRepository')
     private readonly auctionRepository: AuctionRepository,
   ) {}
-
   async placeBid(auctionId: string, amount: number) {
     try {
       const auction = await this.auctionRepository.findById(auctionId);
       if (!auction) {
-        throw new NotFoundException('No Auction Found');
+        throw new resErrorHandler('No Auction Found', HttpStatus.NOT_FOUND);
       }
 
-      if (auction?.currentPrice > amount) {
-        throw new BadRequestException(
+      if (auction.currentPrice >= amount) {
+        throw new resErrorHandler(
           'Amount must be greater than current price',
+          HttpStatus.BAD_REQUEST,
         );
       }
 
       const multiplyBid = (amount - auction.currentPrice) % auction.jumpBid;
       if (multiplyBid !== 0) {
-        throw new BadRequestException(
+        throw new resErrorHandler(
           'Amount must be a multiple of the jumpBid',
+          HttpStatus.BAD_REQUEST,
         );
       }
 
       auction.placeBid(amount);
       const bid = new Bid(null, amount, new Date(), auctionId);
       return this.bidRepository.save(bid);
-    } catch (err) {
-      if (
-        err instanceof NotFoundException ||
-        err instanceof BadRequestException
-      ) {
-        throw err;
-      } else console.error('Error Placing bid: ', err);
-      throw new InternalServerErrorException('Server Error');
+    } catch (error) {
+      if (error instanceof resErrorHandler) {
+        throw error;
+      } else {
+        console.error('Error placing bid:', error);
+        throw new resErrorHandler(
+          'Server Error',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
     }
   }
 
