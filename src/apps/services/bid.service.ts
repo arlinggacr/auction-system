@@ -30,6 +30,14 @@ export class BidService {
           'Amount must be greater than current price',
         );
       }
+      const multiplyBid = (amount - auction.currentPrice) % auction.jumpBid;
+
+      if (multiplyBid !== 0) {
+        throw new BadRequestException(
+          'Amount is have to be multiple of the jumpBid',
+        );
+      }
+
       auction.placeBid(amount);
       const bid = new Bid(null, amount, new Date(), auctionId);
       return this.bidRepository.save(bid);
