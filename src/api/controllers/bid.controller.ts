@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { BidService } from 'src/apps/services/bid.service';
 import { PlaceBidDto } from '../dto/place-bid.dto';
-import { ResponseInterceptor } from '../interfaces/response-interceptor';
+import { ResponseInterceptor } from '../../shared/utils/response-interceptor';
 
 @Controller('bids')
 export class BidController {

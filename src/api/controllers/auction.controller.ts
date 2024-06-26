@@ -8,8 +8,8 @@ import {
 } from '@nestjs/common';
 import { AuctionService } from '../../apps/services/auction.service';
 import { Auction } from '../../domain/entities/auction.model';
+import { ResponseInterceptor } from '../../shared/utils/response-interceptor';
 import { CreateAuctionDto } from '../dto/create-auction.dto';
-import { ResponseInterceptor } from '../interfaces/response-interceptor';
 
 @Controller('auctions')
 export class AuctionController {
