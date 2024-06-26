@@ -40,6 +40,7 @@ export class AuctionController {
         createAuctionDto.endTime,
         createAuctionDto.buyNowPrice,
         createAuctionDto.jumpBid,
+        createAuctionDto.isClosed,
       ),
     );
   }
