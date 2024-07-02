@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Bid } from '../../../domain/entities/bid.model';
 import { BidRepository } from '../../../domain/repositories/bid.repositories';
+import { add24Hours } from '../../../shared/utils/helpers/add24Hours';
 import { AuctionOrmEntity } from '../entities/auction.orm-entities';
 import { BidOrmEntity } from '../entities/bid.orm-entities';
 
@@ -37,6 +38,10 @@ export class BidTypeOrmRepository implements BidRepository {
         isClosed: true,
       });
     }
+
+    await this.auctionRepository.update(bid.auctionId, {
+      endTime: add24Hours(auction.endTime),
+    });
 
     const savedBid = await this.bidRepository.save(bidEntity);
 
