@@ -52,4 +52,23 @@ export class AuctionService {
       );
     }
   }
+
+  async updateAuction(id: string, auction: Auction): Promise<Auction> {
+    try {
+      const auctionData = await this.auctionRepository.findById(id);
+      if (!auctionData) {
+        throw new resErrorHandler('Auction not found', HttpStatus.NOT_FOUND);
+      }
+      return await this.auctionRepository.update(id, auction);
+    } catch (err) {
+      if (err instanceof resErrorHandler) {
+        throw err;
+      }
+      console.error(err);
+      throw new resErrorHandler(
+        'Server Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }
