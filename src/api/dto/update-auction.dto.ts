@@ -34,7 +34,7 @@ export class UpdateAuctionDto {
 
   @Optional()
   @IsNumber()
-  @Min(1)
+  @Min(500)
   buyNowPrice: number;
 
   @Optional()
