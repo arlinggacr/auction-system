@@ -86,8 +86,6 @@ export class AuctionTypeOrmRepository implements AuctionRepository {
 
     Object.assign(existingAuction, auction);
 
-    console.log(existingAuction);
-
     const updatedAuction = await this.auctionRepository.save(existingAuction);
     return new Auction(
       updatedAuction.id,
