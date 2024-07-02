@@ -78,4 +78,27 @@ export class AuctionTypeOrmRepository implements AuctionRepository {
       savedAuction.isClosed,
     );
   }
+
+  async update(id: string, auction: Auction): Promise<Auction> {
+    const existingAuction = await this.auctionRepository.findOne({
+      where: { id },
+    });
+
+    Object.assign(existingAuction, auction);
+
+    console.log(existingAuction);
+
+    const updatedAuction = await this.auctionRepository.save(existingAuction);
+    return new Auction(
+      updatedAuction.id,
+      updatedAuction.title,
+      updatedAuction.description,
+      updatedAuction.startPrice,
+      updatedAuction.currentPrice,
+      updatedAuction.endTime,
+      updatedAuction.buyNowPrice,
+      updatedAuction.jumpBid,
+      updatedAuction.isClosed,
+    );
+  }
 }
